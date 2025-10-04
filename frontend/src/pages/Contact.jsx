@@ -313,25 +313,87 @@ const Contact = () => {
         <div className="mt-16">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Our Location</h2>
-            <div className="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
-              <div className="text-center text-gray-600">
-                <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
+            <div className="space-y-4 mb-6">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ministry of Health & Family Welfare</h3>
+                <p className="text-gray-600">Nirman Bhawan, New Delhi - 110011</p>
+                <p className="text-sm text-gray-500 mt-1">Government of India</p>
+              </div>
+            </div>
+            
+            {/* Interactive Google Maps Embed */}
+            <div className="relative">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.123456789!2d77.2345678!3d28.6123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2daa9eb4d0b%3A0x717971125923e5d!2sNirman%20Bhawan%2C%20New%20Delhi%2C%20Delhi%20110011!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ministry of Health & Family Welfare Location Map"
+                className="rounded-lg shadow-md"
+                aria-label="Interactive map showing the location of Ministry of Health & Family Welfare at Nirman Bhawan, New Delhi"
+              />
+              
+              {/* Map overlay with additional info */}
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg max-w-xs">
+                <div className="flex items-start space-x-2">
+                  <svg className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Nirman Bhawan</p>
+                    <p className="text-xs text-gray-600">New Delhi - 110011</p>
+                    <p className="text-xs text-primary-600 mt-1">Click to open in Google Maps</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Additional location information */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="text-lg font-medium">Ministry of Health & Family Welfare</p>
-                <p>Nirman Bhawan, New Delhi - 110011</p>
-                <p className="text-sm mt-2">Interactive map would be embedded here</p>
+                <h4 className="font-medium text-gray-900 mb-1">Office Hours</h4>
+                <p className="text-sm text-gray-600">9:00 AM - 5:30 PM</p>
+                <p className="text-xs text-gray-500">Monday - Friday</p>
+              </div>
+              
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <h4 className="font-medium text-gray-900 mb-1">Contact</h4>
+                <p className="text-sm text-gray-600">+91 11-XXXX-XXXX</p>
+                <p className="text-xs text-gray-500">Main Office</p>
+              </div>
+              
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                <h4 className="font-medium text-gray-900 mb-1">Accessibility</h4>
+                <p className="text-sm text-gray-600">Wheelchair Accessible</p>
+                <p className="text-xs text-gray-500">Ground Floor</p>
+              </div>
+            </div>
+            
+            {/* Directions and additional info */}
+            <div className="mt-6 p-4 bg-primary-50 rounded-lg">
+              <h4 className="font-medium text-primary-900 mb-2">Getting Here</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-primary-800">
+                <div>
+                  <p className="font-medium mb-1">By Metro:</p>
+                  <p>Nearest station: Central Secretariat (Yellow Line)</p>
+                </div>
+                <div>
+                  <p className="font-medium mb-1">By Road:</p>
+                  <p>Near India Gate, accessible via Rajpath</p>
+                </div>
               </div>
             </div>
           </div>

@@ -1,20 +1,14 @@
 "use client"
 
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
 
-const Blog = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all")
+const BlogArticle = () => {
+  const { id } = useParams()
+  const [article, setArticle] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const categories = [
-    { id: "all", name: "All Articles" },
-    { id: "prevention", name: "Prevention" },
-    { id: "diseases", name: "Common Diseases" },
-    { id: "nutrition", name: "Nutrition" },
-    { id: "maternal", name: "Maternal Health" },
-    { id: "child", name: "Child Health" },
-  ]
-
+  // Sample articles data (in a real app, this would come from an API)
   const articles = [
     {
       id: 1,
@@ -285,243 +279,164 @@ const Blog = () => {
     },
   ]
 
-  const filteredArticles =
-    selectedCategory === "all" ? articles : articles.filter((article) => article.category === selectedCategory)
+  useEffect(() => {
+    // Simulate API call
+    const foundArticle = articles.find(article => article.id === parseInt(id))
+    setArticle(foundArticle)
+    setLoading(false)
+  }, [id])
 
-  const featuredArticles = articles.filter((article) => article.featured)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading article...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!article) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h1>
+          <p className="text-gray-600 mb-6">The article you're looking for doesn't exist.</p>
+          <Link
+            to="/blog"
+            className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+          >
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-health-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Health Awareness Hub</h1>
-          <p className="text-xl text-primary-100 max-w-3xl mx-auto">
-            Stay informed with the latest health information, prevention tips, and wellness guidance tailored for rural
-            communities.
-          </p>
+      <section className="bg-gradient-to-r from-primary-600 to-health-600 text-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center mb-4">
+            <Link
+              to="/blog"
+              className="text-primary-100 hover:text-white transition-colors duration-200 flex items-center"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Blog
+            </Link>
+          </div>
+          <div className="flex items-center mb-4">
+            <span className="px-3 py-1 bg-primary-100 text-primary-800 text-sm font-medium rounded-full">
+              {article.category.charAt(0).toUpperCase() + article.category.slice(1)}
+            </span>
+            <span className="text-primary-100 text-sm ml-4">{article.readTime}</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-6">{article.title}</h1>
+          <div className="flex items-center space-x-4">
+            <img 
+              src={article.authorImage || "/placeholder-user.jpg"} 
+              alt={article.author}
+              className="w-12 h-12 rounded-full object-cover"
+            />
+            <div>
+              <p className="text-lg font-medium">{article.author}</p>
+              <p className="text-primary-100">{new Date(article.date).toLocaleDateString()}</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Featured Articles */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Featured Articles</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {featuredArticles.map((article) => (
-              <div
-                key={article.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-              >
-                <img
-                  src={article.image || "/meerapatel.png"}
-                  alt={article.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex items-center mb-3">
-                    <span className="px-3 py-1 bg-primary-100 text-primary-800 text-xs font-medium rounded-full">
-                      {categories.find((cat) => cat.id === article.category)?.name}
-                    </span>
-                    <span className="text-gray-500 text-sm ml-3">{article.readTime}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-primary-600 transition-colors duration-200">
-                    <Link to={`/blog/${article.id}`}>{article.title}</Link>
-                  </h3>
-                  <p className="text-gray-600 mb-4">{article.excerpt}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <img 
-                        src={article.authorImage || "/placeholder-user.jpg"} 
-                        alt={article.author}
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{article.author}</p>
-                        <p className="text-xs text-gray-500">{new Date(article.date).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <Link
-                      to={`/blog/${article.id}`}
-                      className="text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors duration-200 hover:underline"
-                    >
-                      Read More →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Category Filter */}
-        <section className="mb-8">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                  selectedCategory === category.id
-                    ? "bg-primary-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* All Articles */}
-        <section>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            {selectedCategory === "all" ? "All Articles" : categories.find((cat) => cat.id === selectedCategory)?.name}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArticles.map((article) => (
-              <div
-                key={article.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-              >
-                <img
-                  src={article.image || "/placeholder.svg"}
-                  alt={article.title}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-6">
-                  <div className="flex items-center mb-3">
-                    <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded">
-                      {categories.find((cat) => cat.id === article.category)?.name}
-                    </span>
-                    <span className="text-gray-500 text-xs ml-2">{article.readTime}</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-primary-600 transition-colors duration-200">
-                    <Link to={`/blog/${article.id}`}>{article.title}</Link>
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">{article.excerpt}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <img 
-                        src={article.authorImage || "/placeholder-user.jpg"} 
-                        alt={article.author}
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="text-xs font-medium text-gray-900">{article.author}</p>
-                        <p className="text-xs text-gray-500">{new Date(article.date).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <Link
-                      to={`/blog/${article.id}`}
-                      className="text-primary-600 hover:text-primary-700 font-medium text-xs transition-colors duration-200 hover:underline"
-                    >
-                      Read →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredArticles.length === 0 && (
-            <div className="text-center py-12">
-              <svg
-                className="w-16 h-16 mx-auto text-gray-300 mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <p className="text-gray-500 text-lg">No articles found in this category.</p>
-            </div>
-          )}
-        </section>
-
-        {/* Health Tips Section */}
-        <section className="mt-16 bg-gradient-to-r from-health-50 to-primary-50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Quick Health Tips</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-health-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Stay Hydrated</h3>
-              <p className="text-sm text-gray-600">Drink 8-10 glasses of clean water daily</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Exercise Daily</h3>
-              <p className="text-sm text-gray-600">30 minutes of physical activity keeps you healthy</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Get Sunlight</h3>
-              <p className="text-sm text-gray-600">15 minutes of morning sun for Vitamin D</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Sleep Well</h3>
-              <p className="text-sm text-gray-600">7-8 hours of quality sleep is essential</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Newsletter Signup */}
-        <section className="mt-16 bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Stay Updated</h2>
-          <p className="text-gray-600 mb-6">
-            Subscribe to our health newsletter and get the latest articles and health tips delivered to your inbox.
-          </p>
-          <div className="max-w-md mx-auto flex gap-3">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+      {/* Article Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <img
+            src={article.image}
+            alt={article.title}
+            className="w-full h-64 md:h-80 object-cover"
+          />
+          <div className="p-8">
+            <div 
+              className="prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: article.content }}
             />
-            <button className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
-              Subscribe
-            </button>
           </div>
-        </section>
+        </div>
+
+        {/* Author Bio */}
+        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-start space-x-4">
+            <img 
+              src={article.authorImage || "/placeholder-user.jpg"} 
+              alt={article.author}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{article.author}</h3>
+              <p className="text-gray-600">
+                {article.author.includes('Dr.') ? 'Medical Professional' : 'Health Expert'} specializing in {article.category} health topics. 
+                Dedicated to providing accurate, accessible health information for rural communities.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Articles */}
+        <div className="mt-12">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {articles
+              .filter(a => a.id !== article.id && a.category === article.category)
+              .slice(0, 2)
+              .map((relatedArticle) => (
+                <Link
+                  key={relatedArticle.id}
+                  to={`/blog/${relatedArticle.id}`}
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                >
+                  <img
+                    src={relatedArticle.image}
+                    alt={relatedArticle.title}
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-4">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2 hover:text-primary-600 transition-colors duration-200">
+                      {relatedArticle.title}
+                    </h4>
+                    <p className="text-gray-600 text-sm">{relatedArticle.excerpt}</p>
+                    <div className="flex items-center mt-3">
+                      <img 
+                        src={relatedArticle.authorImage || "/placeholder-user.jpg"} 
+                        alt={relatedArticle.author}
+                        className="w-6 h-6 rounded-full object-cover mr-2"
+                      />
+                      <span className="text-sm text-gray-500">{relatedArticle.author}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+
+        {/* Back to Blog Button */}
+        <div className="mt-8 text-center">
+          <Link
+            to="/blog"
+            className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 inline-flex items-center"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to All Articles
+          </Link>
+        </div>
       </div>
     </div>
   )
 }
 
-export default Blog
+export default BlogArticle

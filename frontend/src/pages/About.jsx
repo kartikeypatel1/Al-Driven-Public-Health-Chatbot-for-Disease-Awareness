@@ -5,19 +5,19 @@ const About = () => {
     {
       name: "Dr. Rajesh Gupta",
       role: "Chief Medical Officer",
-      image: "/placeholder.svg?height=200&width=200&text=Dr.+Rajesh",
+      image: "/dr.rajesh.avif?height=200&width=200&text=Dr.+Rajesh",
       bio: "15+ years in rural healthcare, specializing in telemedicine and community health programs.",
     },
     {
       name: "Priya Sharma",
       role: "AI Technology Lead",
-      image: "/placeholder.svg?height=200&width=200&text=Priya",
+      image: "/priyashrama.webp?height=200&width=200&text=Priya",
       bio: "Expert in natural language processing and multilingual AI systems for healthcare applications.",
     },
     {
       name: "Amit Kumar",
       role: "Community Outreach Director",
-      image: "/placeholder.svg?height=200&width=200&text=Amit",
+      image: "/amit kumar.jpg?height=200&width=200&text=Amit",
       bio: "Former ASHA coordinator with deep understanding of rural healthcare challenges and solutions.",
     },
   ]
@@ -184,7 +184,7 @@ const About = () => {
               </div>
               <div className="flex justify-center">
                 <img
-                  src="/placeholder.svg?height=300&width=400&text=ASHA+Worker+Story"
+                  src="/indian-asha-worker-portrait.jpg?height=300&width=400&text=ASHA+Worker+Story"
                   alt="ASHA worker helping community"
                   className="rounded-lg shadow-lg"
                 />

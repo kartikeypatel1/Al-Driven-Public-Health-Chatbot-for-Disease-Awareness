@@ -10,6 +10,7 @@ import Contact from "./pages/Contact"
 import Feedback from "./pages/Feedback"
 import Dashboard from "./pages/Dashboard"
 import Blog from "./pages/Blog"
+import BlogArticle from "./pages/BlogArticle"
 import FAQ from "./pages/FAQ"
 import Privacy from "./pages/Privacy"
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogArticle />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
           </Routes>
